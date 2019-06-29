@@ -5,6 +5,8 @@ class Message < ApplicationRecord
   validates :body, presence: true
   validates :sent_at, presence: true
 
+  scope :recent, -> { where(created_at: 1.hour.ago..nil).order(created_at: :desc).limit(50) }
+
   def avatar
     "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(name.to_s)}?d=identicon&f=y"
   end

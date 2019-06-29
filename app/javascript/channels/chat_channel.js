@@ -20,6 +20,6 @@ if (!window.receiveData)
 
 window.sendChatMessage = ({body, name}) => {
   const now = new Date();
-  chatChannel.send({created_at: now, body, name});
+  chatChannel.send({sent_at: now, body, name});
   return now;
 }

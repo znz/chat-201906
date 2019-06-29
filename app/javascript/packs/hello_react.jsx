@@ -26,7 +26,7 @@ class Hello extends React.Component {
       <div>
         <InputBar defaultName={this.props.defaultName} sendChatMessage={data => window.sendChatMessage(data)} />
         <List>
-        {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.created_at)} name={message.name} body={message.body} avatar={message.avatar} />)}
+        {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.sent_at)} name={message.name} body={message.body} avatar={message.avatar} />)}
         </List>
       </div>
     );

@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import InputBar from './input_bar'
 import Message from './message'
+import List from '@material-ui/core/List';
+
 
 class Hello extends React.Component {
   constructor(props) {
@@ -23,7 +25,9 @@ class Hello extends React.Component {
     return (
       <div>
         <InputBar defaultName={this.props.defaultName} sendChatMessage={data => window.sendChatMessage(data)} />
-        {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.created_at)} name={message.name} body={message.body} />)}
+        <List>
+        {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.created_at)} name={message.name} body={message.body} avatar={message.avatar} />)}
+        </List>
       </div>
     );
   }

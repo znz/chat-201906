@@ -5,17 +5,46 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import Message from './message'
 
-const Hello = props => (
-  <div>Hello {props.name}!</div>
-)
+class Hello extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: 'David',
+      text: '',
+      messages: []
+    };
+    window.receiveData = (data) => {
+      this.setState({...this.state, messages: this.state.messages.concat(data)});
+    };
+  }
 
-Hello.defaultProps = {
-  name: 'David'
-}
+  onChangeName(e) {
+    this.setState({...this.state, name: e.target.value});
+  }
 
-Hello.propTypes = {
-  name: PropTypes.string
+  onChangeText(e) {
+    this.setState({...this.state, text: e.target.value});
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    window.sendChatMessage({name: this.state.name, body: this.state.text});
+  }
+
+  render() {
+    return (
+      <div>
+        <input name="name" value={this.state.name} onChange={e => this.onChangeName(e)} />
+        <input name="text" value={this.state.text} onChange={e => this.onChangeText(e)} />
+        <button onClick={(e) => this.handleSubmit(e)}>
+          送信
+        </button>
+        {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.created_at)} name={message.name} body={message.body} />)}
+      </div>
+    );
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

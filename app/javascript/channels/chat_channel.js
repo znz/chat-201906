@@ -11,10 +11,15 @@ const chatChannel = consumer.subscriptions.create("ChatChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-    console.log(data);
+    window.receiveData(data);
   }
 });
 
+if (!window.receiveData)
+  window.receiveData = (data) => {};
+
 window.sendChatMessage = ({body, name}) => {
-  chatChannel.send({created_at: Date.now(), body, name});
+  const now = new Date();
+  chatChannel.send({created_at: now, body, name});
+  return now;
 }

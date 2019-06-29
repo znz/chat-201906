@@ -26,21 +26,26 @@ class InputBar extends React.Component {
     this.state = {
       name: props.defaultName,
       text: '',
+      valid: false,
     };
   }
 
   onChangeName(e) {
-    this.setState({...this.state, name: e.target.value});
+    this.setStateAndValidate({...this.state, name: e.target.value});
   }
 
   onChangeText(e) {
-    this.setState({...this.state, text: e.target.value});
+    this.setStateAndValidate({...this.state, text: e.target.value});
   }
 
   handleSubmit(e) {
     e.preventDefault();
     this.props.sendChatMessage({name: this.state.name, body: this.state.text});
-    this.setState({...this.state, text: ''});
+    this.setStateAndValidate({...this.state, text: ''});
+  }
+
+  setStateAndValidate(newState) {
+    this.setState({...newState, valid: /\S/.test(newState.name) && /\S/.test(newState.text)});
   }
 
   render() {
@@ -64,7 +69,7 @@ class InputBar extends React.Component {
           className={classes.textField}
           onChange={e => this.onChangeText(e)}
         />
-        <Button variant="contained" color="primary" className={classes.button} onClick={e => this.handleSubmit(e)}>
+        <Button variant="contained" color="primary" className={classes.button} onClick={e => this.handleSubmit(e)} disabled={!this.state.valid}>
           送信
           <Icon className={classes.rightIcon}>send</Icon>
         </Button>

@@ -22,16 +22,21 @@ class Hello extends React.Component {
   render() {
     return (
       <div>
-        <InputBar sendChatMessage={data => window.sendChatMessage(data)} />
+        <InputBar defaultName={this.props.defaultName} sendChatMessage={data => window.sendChatMessage(data)} />
         {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.created_at)} name={message.name} body={message.body} />)}
       </div>
     );
   }
 }
 
+Hello.propTypes = {
+  defaultName: PropTypes.string.isRequired,
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+  const default_name = document.getElementById('default_name').value;
   ReactDOM.render(
-    <Hello name="React" />,
+    <Hello defaultName={default_name} />,
     document.body.appendChild(document.createElement('div')),
   )
 })

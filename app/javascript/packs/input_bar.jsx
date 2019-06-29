@@ -24,7 +24,7 @@ class InputBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'David',
+      name: props.defaultName,
       text: '',
     };
   }
@@ -73,7 +73,7 @@ class InputBar extends React.Component {
 }
 
 InputBar.propTypes = {
-  classes: PropTypes.node.isRequired,
+  defaultName: PropTypes.string.isRequired,
   sendChatMessage: PropTypes.func.isRequired,
 }
 

@@ -1,6 +1,6 @@
 import consumer from "./consumer"
 
-consumer.subscriptions.create("ChatChannel", {
+const chatChannel = consumer.subscriptions.create("ChatChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
   },
@@ -11,5 +11,10 @@ consumer.subscriptions.create("ChatChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
+    console.log(data);
   }
 });
+
+window.sendChatMessage = ({body, name}) => {
+  chatChannel.send({created_at: Date.now(), body, name});
+}

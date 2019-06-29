@@ -5,42 +5,24 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import InputBar from './input_bar'
 import Message from './message'
 
 class Hello extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'David',
-      text: '',
       messages: []
     };
     window.receiveData = (data) => {
-      this.setState({...this.state, messages: this.state.messages.concat(data)});
+      this.setState({...this.state, messages: [data].concat(this.state.messages)});
     };
-  }
-
-  onChangeName(e) {
-    this.setState({...this.state, name: e.target.value});
-  }
-
-  onChangeText(e) {
-    this.setState({...this.state, text: e.target.value});
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-    window.sendChatMessage({name: this.state.name, body: this.state.text});
   }
 
   render() {
     return (
       <div>
-        <input name="name" value={this.state.name} onChange={e => this.onChangeName(e)} />
-        <input name="text" value={this.state.text} onChange={e => this.onChangeText(e)} />
-        <button onClick={(e) => this.handleSubmit(e)}>
-          送信
-        </button>
+        <InputBar sendChatMessage={data => window.sendChatMessage(data)} />
         {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.created_at)} name={message.name} body={message.body} />)}
       </div>
     );

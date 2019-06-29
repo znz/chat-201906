@@ -14,7 +14,7 @@ class Hello extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: []
+      messages: props.recentMessages,
     };
     window.receiveData = (data) => {
       this.setState({...this.state, messages: [data].concat(this.state.messages)});
@@ -35,12 +35,14 @@ class Hello extends React.Component {
 
 Hello.propTypes = {
   defaultName: PropTypes.string.isRequired,
+  recentMessages: PropTypes.array.isRequired,
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   const default_name = document.getElementById('default_name').value;
+  const recent_messages = JSON.parse(document.getElementById('recent_messages').value);
   ReactDOM.render(
-    <Hello defaultName={default_name} />,
+    <Hello defaultName={default_name} recentMessages={recent_messages} />,
     document.body.appendChild(document.createElement('div')),
   )
 })

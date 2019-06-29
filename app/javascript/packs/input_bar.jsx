@@ -40,6 +40,7 @@ class InputBar extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.sendChatMessage({name: this.state.name, body: this.state.text});
+    this.setState({...this.state, text: ''});
   }
 
   render() {

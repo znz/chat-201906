@@ -15,18 +15,29 @@ class Hello extends React.Component {
     super(props);
     this.state = {
       messages: props.recentMessages,
+      sentMessages: [],
     };
     window.receiveData = (data) => {
-      this.setState({...this.state, messages: [data].concat(this.state.messages)});
+      const sent_at = new Date(data.sent_at);
+      data = {...data, sent_at};
+      const sentMessages = this.state.sentMessages.filter(message => (message.name !== data.name || message.body !== data.body || message.sent_at.toString() !== data.sent_at.toString()));
+      this.setState({...this.state, messages: [data].concat(this.state.messages), sentMessages});
     };
+  }
+
+  sendChatMessage(data) {
+    const sent_at = window.sendChatMessage(data);
+    data = {...data, sent_at};
+    this.setState({...this.state, sentMessages: [data].concat(this.state.sentMessages)});
   }
 
   render() {
     return (
       <div>
-        <InputBar defaultName={this.props.defaultName} sendChatMessage={data => window.sendChatMessage(data)} />
+        <InputBar defaultName={this.props.defaultName} sendChatMessage={data => this.sendChatMessage(data)} />
         <List>
-        {this.state.messages.map((message) => <Message key={message.id} date={new Date(message.sent_at)} name={message.name} body={message.body} avatar={message.avatar} />)}
+        {this.state.sentMessages.map((message, i) => <Message key={-i} date={message.sent_at} name={message.name} body={message.body} avatar="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=blank&f=y" />)}
+        {this.state.messages.map(message => <Message key={message.id} date={new Date(message.sent_at)} name={message.name} body={message.body} avatar={message.avatar} />)}
         </List>
       </div>
     );

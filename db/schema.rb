@@ -13,6 +13,8 @@
 ActiveRecord::Schema.define(version: 2019_06_29_152426) do
 
   create_table "messages", force: :cascade do |t|
+    t.string "remote_ip", null: false
+    t.string "request_id", null: false
     t.string "name", null: false
     t.string "body", null: false
     t.datetime "sent_at", null: false

@@ -1,6 +1,8 @@
 require 'digest/md5'
 
 class Message < ApplicationRecord
+  validates :remote_ip, presence: true
+  validates :request_id, presence: true
   validates :name, presence: true
   validates :body, presence: true
   validates :sent_at, presence: true

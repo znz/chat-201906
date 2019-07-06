@@ -61,4 +61,19 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   config.hosts << ENV['CONFIG_HOSTS'] if ENV.key?('CONFIG_HOSTS')
+
+  # https://www.cloudflare.com/ips/
+  cloudflare_v4 = Rails.root.join('tmp/cloudflare-ips-v4')
+  unless cloudflare_v4.exist?
+    cloudflare_v4.write(Net::HTTP.get(URI('https://www.cloudflare.com/ips-v4')))
+  end
+  cloudflare_v6 = Rails.root.join('tmp/cloudflare-ips-v6')
+  unless cloudflare_v6.exist?
+    cloudflare_v6.write(Net::HTTP.get(URI('https://www.cloudflare.com/ips-v6')))
+  end
+  config.action_dispatch.trusted_proxies = [
+    *ActionDispatch::RemoteIp::TRUSTED_PROXIES,
+    *cloudflare_v4.read.split,
+    *cloudflare_v6.read.split,
+  ].map { |proxy| IPAddr.new(proxy.to_s) }
 end

@@ -60,7 +60,11 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  config.hosts << ENV['CONFIG_HOSTS'].split if ENV.key?('CONFIG_HOSTS')
+  if ENV.key?('CONFIG_HOSTS')
+    ENV['CONFIG_HOSTS'].split.each do |host|
+      config.hosts << host
+    end
+  end
 
   # https://www.cloudflare.com/ips/
   cloudflare_v4 = Rails.root.join('tmp/cloudflare-ips-v4')

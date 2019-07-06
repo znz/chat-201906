@@ -1,3 +1,16 @@
+<link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet">
+<video id='my-video' class='video-js' controls preload='auto' width='320' height='240'
+poster='/rubykansai.png'
+data-setup='{}'>
+  <source src="/hls/rubykansai.m3u8" type='application/vnd.apple.mpegurl' />
+  <p class='vjs-no-js'>
+    To view this video please enable JavaScript, and consider upgrading to a web browser that
+    <a href='https://videojs.com/html5-video-support/' target='_blank'>supports HTML5 video</a>
+  </p>
+</video>
+<script src='https://vjs.zencdn.net/7.5.5/video.js'></script>
+<script src='https://vjs.zencdn.net/7.5.5/lang/ja.js'></script>
+
 <%= hidden_field_tag 'default_name', "#{Faker::Color.color_name.capitalize} #{Faker::Creature::Animal.name.capitalize}" %>
 <%= hidden_field_tag 'recent_messages', Message.recent.map(&:to_chat_hash).to_json %>
 <%= javascript_pack_tag 'hello_react' %>

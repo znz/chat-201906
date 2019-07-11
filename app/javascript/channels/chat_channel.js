@@ -1,6 +1,6 @@
 import consumer from "./consumer"
 
-const chatChannel = consumer.subscriptions.create("ChatChannel", {
+export default consumer.subscriptions.create("ChatChannel", {
   connected() {
     // Called when the subscription is ready for use on the server
   },
@@ -11,15 +11,5 @@ const chatChannel = consumer.subscriptions.create("ChatChannel", {
 
   received(data) {
     // Called when there's incoming data on the websocket for this channel
-    window.receiveData(data);
   }
 });
-
-if (!window.receiveData)
-  window.receiveData = (data) => {};
-
-window.sendChatMessage = ({body, name}) => {
-  const now = new Date();
-  chatChannel.send({sent_at: now, body, name});
-  return now;
-}

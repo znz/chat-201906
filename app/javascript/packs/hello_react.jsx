@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import InputBar from './input_bar'
 import Message from './message'
 import List from '@material-ui/core/List';
-
+import ChatChannel from '../channels/chat_channel';
 
 class Hello extends React.Component {
   constructor(props) {
@@ -17,7 +17,7 @@ class Hello extends React.Component {
       messages: props.recentMessages,
       sentMessages: [],
     };
-    window.receiveData = (data) => {
+    ChatChannel.received = (data) => {
       const sent_at = new Date(data.sent_at);
       data = {...data, sent_at};
       const sentMessages = this.state.sentMessages.filter(message => (message.name !== data.name || message.body !== data.body || message.sent_at.toString() !== data.sent_at.toString()));
@@ -26,8 +26,9 @@ class Hello extends React.Component {
   }
 
   sendChatMessage(data) {
-    const sent_at = window.sendChatMessage(data);
+    const sent_at = new Date();
     data = {...data, sent_at};
+    ChatChannel.send(data);
     this.setState({...this.state, sentMessages: [data].concat(this.state.sentMessages)});
   }
 

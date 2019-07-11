@@ -10,6 +10,8 @@ data-setup='{}'>
 </video>
 <script src='https://vjs.zencdn.net/7.5.5/video.js'></script>
 <script src='https://vjs.zencdn.net/7.5.5/lang/ja.js'></script>
+<button onclick="(function(){var v=videojs('my-video');v.src(v.src());v.play();})()">reload video</button>
+<hr>
 
 <%= hidden_field_tag 'default_name', "#{Faker::Color.color_name.capitalize} #{Faker::Creature::Animal.name.capitalize}" %>
 <%= hidden_field_tag 'recent_messages', Message.recent.map(&:to_chat_hash).to_json %>

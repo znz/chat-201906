@@ -16,16 +16,22 @@ class Hello extends React.Component {
     super(props);
     this.state = {
       connected: false,
+      connections: [],
       messages: props.recentMessages,
       sentMessages: [],
     };
     ChatChannel.connected = () => {
       this.setState({...this.state, connected: true});
+      ChatChannel.send({name: this.props.defaultName});
     };
     ChatChannel.disconnected = () => {
       this.setState({...this.state, connected: false});
     };
     ChatChannel.received = (data) => {
+      if (data.connections) {
+      this.setState({...this.state, connections: data.connections});
+        return;
+      }
       const sent_at = new Date(data.sent_at);
       data = {...data, sent_at};
       const sentMessages = this.state.sentMessages.filter(message => (message.name !== data.name || message.body !== data.body || message.sent_at.toString() !== data.sent_at.toString()));
@@ -44,7 +50,7 @@ class Hello extends React.Component {
     return (
       <div>
         <InputBar defaultName={this.props.defaultName} sendChatMessage={data => this.sendChatMessage(data)} />
-        <InfoBar connected={this.state.connected} />
+        <InfoBar connected={this.state.connected} connections={this.state.connections} />
         <List>
         {this.state.sentMessages.map((message, i) => <Message key={-i} date={message.sent_at} name={message.name} body={message.body} avatar="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=blank&f=y" />)}
         {this.state.messages.map(message => <Message key={message.id} date={new Date(message.sent_at)} name={message.name} body={message.body} avatar={message.avatar} />)}

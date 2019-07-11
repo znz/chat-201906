@@ -1,22 +1,29 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
 import React from 'react';
-import Box from '@material-ui/core/Box';
+import Grid from '@material-ui/core/Grid';
 import Icon from '@material-ui/core/Icon';
+import Avatar from '@material-ui/core/Avatar';
 
 const useStyles = makeStyles((theme) => createStyles({
   root: {
-    margin: 1,
+    margin: 10,
   },
   connected: {
   },
   disconnected: {
     color: 'red',
   },
+  avatar: {
+    height: 24,
+    width: 24,
+    margin: 4,
+  },
 }));
 
 export default function InfoBar(props) {
   const classes = useStyles(props);
-  return <Box className={classes.root}>
+  return <Grid className={classes.root} container justify="flex-start" alignItems="center">
     {props.connected ? <Icon className={classes.connected}>sync</Icon> : <Icon className={classes.disconnected}>sync_disabled</Icon>}
-  </Box>;
+    {props.connections.map(c => <Avatar className={classes.avatar} alt={c.name} title={c.name} src={c.avatar} key={c.avatar} />)}
+  </Grid>;
 }

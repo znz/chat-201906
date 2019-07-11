@@ -5,17 +5,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import ChatChannel from '../channels/chat_channel';
 import InputBar from './input_bar'
+import InfoBar from './info_bar'
 import Message from './message'
 import List from '@material-ui/core/List';
-import ChatChannel from '../channels/chat_channel';
 
 class Hello extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      connected: false,
       messages: props.recentMessages,
       sentMessages: [],
+    };
+    ChatChannel.connected = () => {
+      this.setState({...this.state, connected: true});
+    };
+    ChatChannel.disconnected = () => {
+      this.setState({...this.state, connected: false});
     };
     ChatChannel.received = (data) => {
       const sent_at = new Date(data.sent_at);
@@ -36,6 +44,7 @@ class Hello extends React.Component {
     return (
       <div>
         <InputBar defaultName={this.props.defaultName} sendChatMessage={data => this.sendChatMessage(data)} />
+        <InfoBar connected={this.state.connected} />
         <List>
         {this.state.sentMessages.map((message, i) => <Message key={-i} date={message.sent_at} name={message.name} body={message.body} avatar="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=blank&f=y" />)}
         {this.state.messages.map(message => <Message key={message.id} date={new Date(message.sent_at)} name={message.name} body={message.body} avatar={message.avatar} />)}

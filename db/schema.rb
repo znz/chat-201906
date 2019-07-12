@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_29_152426) do
+ActiveRecord::Schema.define(version: 2019_07_12_231532) do
+
+  create_table "appearances", force: :cascade do |t|
+    t.string "remote_ip", null: false
+    t.string "request_id", null: false
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "messages", force: :cascade do |t|
     t.string "remote_ip", null: false

@@ -16,7 +16,7 @@ class Hello extends React.Component {
     super(props);
     this.state = {
       connected: false,
-      connections: [],
+      appearance: [],
       messages: props.recentMessages,
       sentMessages: [],
     };
@@ -28,8 +28,8 @@ class Hello extends React.Component {
       this.setState({...this.state, connected: false});
     };
     ChatChannel.received = (data) => {
-      if (data.connections) {
-      this.setState({...this.state, connections: data.connections});
+      if (data.appearance) {
+      this.setState({...this.state, appearance: data.appearance});
         return;
       }
       const sent_at = new Date(data.sent_at);
@@ -50,7 +50,7 @@ class Hello extends React.Component {
     return (
       <div>
         <InputBar defaultName={this.props.defaultName} sendChatMessage={data => this.sendChatMessage(data)} />
-        <InfoBar connected={this.state.connected} connections={this.state.connections} />
+        <InfoBar connected={this.state.connected} appearance={this.state.appearance} />
         <List>
         {this.state.sentMessages.map((message, i) => <Message key={-i} date={message.sent_at} name={message.name} body={message.body} avatar="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=blank&f=y" />)}
         {this.state.messages.map(message => <Message key={message.id} date={new Date(message.sent_at)} name={message.name} body={message.body} avatar={message.avatar} />)}

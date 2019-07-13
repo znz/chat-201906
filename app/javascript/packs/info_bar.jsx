@@ -24,6 +24,6 @@ export default function InfoBar(props) {
   const classes = useStyles(props);
   return <Grid className={classes.root} container justify="flex-start" alignItems="center">
     {props.connected ? <Icon className={classes.connected}>sync</Icon> : <Icon className={classes.disconnected}>sync_disabled</Icon>}
-    {props.connected && props.appearance.map(c => <Avatar className={classes.avatar} alt={c.name} title={c.name} src={c.avatar} key={c.avatar} />)}
+    {props.connected && props.appearance.map(c => <Avatar className={classes.avatar} alt={c.name} title={c.name} src={c.avatar} key={c.id} />)}
   </Grid>;
 }

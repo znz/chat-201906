@@ -1,6 +1,4 @@
 class ChatChannel < ApplicationCable::Channel
-  @@appearance = {}
-
   def subscribed
     stream_from 'chat_channel'
   end
@@ -15,26 +13,10 @@ class ChatChannel < ApplicationCable::Channel
       remote_ip: connection.env['action_dispatch.remote_ip'].to_s,
       request_id: connection.env['action_dispatch.request_id'],
       name: data['name'], body: data['body'], sent_at: data['sent_at'])
-    add_appearance(message.request_id, message.name, message.avatar)
+    Appearance.where(request_id: message.request_id).first_or_create do |appearance|
+      appearance.remote_ip = message.remote_ip
+      appearance.name = message.name
+    end
     message.save!
-  end
-
-  private
-
-  def add_appearance(request_id, name, avatar)
-    @@appearance[request_id] = {
-      name: name,
-      avatar: avatar,
-    }
-    notify_appearance
-  end
-
-  def delete_appearance(request_id)
-    @@appearance.delete(request_id)
-    notify_appearance
-  end
-
-  def notify_appearance
-    ActionCable.server.broadcast 'chat_channel', appearance: @@appearance.values
   end
 end

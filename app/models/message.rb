@@ -9,13 +9,7 @@ class Message < ApplicationRecord
 
   scope :recent, -> { where(created_at: 1.hour.ago..nil).order(created_at: :desc).limit(50) }
 
-  def avatar_id
-    "#{remote_ip} #{request_id} #{name}"
-  end
-
-  def avatar
-    "https://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(avatar_id)}?d=identicon&f=y"
-  end
+  include Gravatar
 
   def to_chat_hash
     {
